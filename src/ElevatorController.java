@@ -36,7 +36,12 @@ public class ElevatorController {
         for (Elevator elevator : unoccupiedElevators) {
             if (elevator.getCurrentFloor() == floorRequestWasMadeFrom) {
                 elevator.pickupPerson();
+                // TODO: Cleanup this code perhaps - lots of adding and removing from sets that's duplicated
+                occupiedElevators.add(elevator);
+                unoccupiedElevators.remove(elevator);
                 elevator.moveToFloor(desiredFloor);
+                occupiedElevators.remove(elevator);
+                unoccupiedElevators.remove(elevator);
                 checkIfElevatorNeedsMaintenance(elevator);
                 return;
             }
@@ -45,6 +50,15 @@ public class ElevatorController {
         // Priority 2
         // Check and see if an OCCUPIED elevator is moving and will pass the floor on its way
         // TODO: What about time?
+        for (Elevator elevator : occupiedElevators) {
+            // Elevator is on floor 2 and is moving to floor 10
+            // Requested floor is 5 so we should stop this elevator
+            if (elevator.isMovingUp() && (floorRequestWasMadeFrom > elevator.getCurrentFloor()) && (elevator.getDesiredFloor() > floorRequestWasMadeFrom)) {
+                // TODO: Stop the elevator on the floor?
+            } else if (!elevator.isMovingUp() && (floorRequestWasMadeFrom < elevator.getCurrentFloor()) && (elevator.getDesiredFloor() < floorRequestWasMadeFrom)) {
+                // TODO: Stop the elevator on the floor
+            }
+        }
 
         // Priority 3
         // The unoccupied elevator closest to the requested floor should move to there
@@ -61,7 +75,11 @@ public class ElevatorController {
         if (closestElevator != null) {
             closestElevator.moveToFloor(floorRequestWasMadeFrom);
             closestElevator.pickupPerson();
+            occupiedElevators.add(closestElevator);
+            unoccupiedElevators.remove(closestElevator);
             closestElevator.moveToFloor(desiredFloor);
+            occupiedElevators.remove(closestElevator);
+            unoccupiedElevators.remove(closestElevator);
             checkIfElevatorNeedsMaintenance(closestElevator);
             return;
         }

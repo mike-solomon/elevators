@@ -9,6 +9,8 @@ public class Elevator {
     private int numberOfTrips;
     private int numberOfFloorsPassed;
     private boolean moving;
+    private boolean movingUp;
+    private int desiredFloor;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -25,6 +27,16 @@ public class Elevator {
             System.out.println("Elevator: " + id + " received an invalid desired floor - ignoring");
             return;
         }
+
+        if (desiredFloor - currentFloor > 0) {
+            this.movingUp = false;
+        } else {
+            this.movingUp = true;
+        }
+
+        this.desiredFloor = desiredFloor;
+
+        // TODO: Add element of time here or some way to halt the elevator while it's moving
 
         numberOfFloorsPassed += Math.abs(currentFloor - desiredFloor);
         currentFloor = desiredFloor;
@@ -83,5 +95,13 @@ public class Elevator {
 
     public int getNumberOfFloorsPassed() {
         return this.numberOfFloorsPassed;
+    }
+
+    public boolean isMovingUp() {
+        return this.movingUp;
+    }
+
+    public int getDesiredFloor() {
+        return this.desiredFloor;
     }
 }
