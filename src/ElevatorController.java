@@ -7,7 +7,8 @@ public class ElevatorController {
     int numberOfFloors;
     int startingFloor;
     private ArrayList<Elevator> elevators;
-    private Set<Integer> occupiedElevators;
+    private Set<Elevator> occupiedElevators;
+    private Set<Elevator> unoccupiedElevators;
 
     public ElevatorController(int numberOfElevators, int numberOfFloors, int startingFloor) {
         this.numberOfElevators = numberOfElevators;
@@ -21,6 +22,8 @@ public class ElevatorController {
         }
 
         this.occupiedElevators = new HashSet<>();
+        this.unoccupiedElevators = new HashSet<>();
+        unoccupiedElevators.addAll(elevators);
     }
 
     public void requestElevator(int floorRequestWasMadeFrom, int desiredFloor) {
@@ -28,6 +31,13 @@ public class ElevatorController {
 
         // Priority 1
         // Check and see if an UNOCCUPIED elevator is already at the requested floor
+        for (Elevator elevator : unoccupiedElevators) {
+            if (elevator.getCurrentFloor() == floorRequestWasMadeFrom) {
+                elevator.pickupPerson();
+                elevator.moveToFloor(desiredFloor);
+                return;
+            }
+        }
 
         // Priority 2
         // Check and see if an OCCUPIED elevator is moving and will pass the floor on its way
@@ -36,7 +46,7 @@ public class ElevatorController {
         // The unoccupied elevator closest to the requested floor should move to there
 
         // Priority 4
-        // If there are no unoccupied elevators that are going to move past this then what? Wait? 
+        // If there are no unoccupied elevators that are going to move past this then what? Wait?
     }
 
 }

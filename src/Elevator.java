@@ -1,9 +1,9 @@
 public class Elevator {
-    int numberOfFloors;
-    int currentFloor;
-    int id;
-    boolean doorsOpen;
-    boolean occupied;
+    private int numberOfFloors;
+    private int currentFloor;
+    private int id;
+    private boolean doorsOpen;
+    private boolean occupied;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -45,7 +45,13 @@ public class Elevator {
         System.out.println("Elevator: " + id + " is closing its doors");
     }
 
-    public void setOccupied(boolean occupied) {
-        this.occupied = occupied;
+    public void pickupPerson() {
+        this.openDoor();
+        this.occupied = true;
+        this.closeDoor();
+    }
+
+    public int getCurrentFloor() {
+        return this.currentFloor;
     }
 }
