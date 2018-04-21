@@ -53,8 +53,13 @@ public class ElevatorController {
         for (Elevator elevator : occupiedElevators) {
             // Elevator is on floor 2 and is moving to floor 10
             // Requested floor is 5 so we should stop this elevator
+            // Todo: this if could be an or to not duplicate and also be cleaned up / condensed
             if (elevator.isMovingUp() && (floorRequestWasMadeFrom > elevator.getCurrentFloor()) && (elevator.getDesiredFloor() > floorRequestWasMadeFrom)) {
                 // TODO: Stop the elevator on the floor?
+                // elevator.stopOnFloor(floorRequestWasMadeFrom)
+                // Do all the pickup people stuff
+                // elevator.addNewDestinationFloorToFloorQueue(desiredFloor) - will need to add a queue of stops or something so that we can stop on multiple floors
+                // elevator.continue()
             } else if (!elevator.isMovingUp() && (floorRequestWasMadeFrom < elevator.getCurrentFloor()) && (elevator.getDesiredFloor() < floorRequestWasMadeFrom)) {
                 // TODO: Stop the elevator on the floor
             }

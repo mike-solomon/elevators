@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 public class Elevator {
     private static int NUMBER_OF_TRIPS_BEFORE_MAINTENANCE = 100;
     private int numberOfFloors;
@@ -37,6 +39,7 @@ public class Elevator {
         this.desiredFloor = desiredFloor;
 
         // TODO: Add element of time here or some way to halt the elevator while it's moving
+        stepToNextFloor();
 
         numberOfFloorsPassed += Math.abs(currentFloor - desiredFloor);
         currentFloor = desiredFloor;
@@ -46,6 +49,24 @@ public class Elevator {
         if (numberOfTrips >= NUMBER_OF_TRIPS_BEFORE_MAINTENANCE) {
             System.out.println("Elevator: " + this.id + " is going into maintenance mode!");
             this.maintenanceMode = true;
+        }
+    }
+
+    // This won't really be of use unless we have threading to halt while it's stepping through the floors because
+    // we won't be able to pick up any breaking or halting input and change our action.
+    public void stepToNextFloor() {
+        while (this.currentFloor != this.desiredFloor) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception e) {
+                // Ignore for now
+            }
+
+            if (this.movingUp) {
+                this.currentFloor++;
+            } else {
+                this.currentFloor--;
+            }
         }
     }
 
