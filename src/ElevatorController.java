@@ -44,6 +44,22 @@ public class ElevatorController {
 
         // Priority 3
         // The unoccupied elevator closest to the requested floor should move to there
+        int closestDistanceToFloor = Integer.MAX_VALUE;
+        Elevator closestElevator = null;
+        for (Elevator elevator : unoccupiedElevators) {
+            int distanceBetweenFloors = Math.abs(floorRequestWasMadeFrom - elevator.getCurrentFloor());
+            if (distanceBetweenFloors < closestDistanceToFloor) {
+                closestElevator = elevator;
+                closestDistanceToFloor = distanceBetweenFloors;
+            }
+        }
+
+        if (closestElevator != null) {
+            closestElevator.moveToFloor(floorRequestWasMadeFrom);
+            closestElevator.pickupPerson();
+            closestElevator.moveToFloor(desiredFloor);
+            return;
+        }
 
         // Priority 4
         // If there are no unoccupied elevators that are going to move past this then what? Wait?
