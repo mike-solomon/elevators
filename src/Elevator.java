@@ -7,6 +7,7 @@ public class Elevator {
     private boolean occupied;
     private boolean maintenanceMode;
     private int numberOfTrips;
+    private int numberOfFloorsPassed;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -14,6 +15,7 @@ public class Elevator {
         this.currentFloor = startingFloor;
         this.maintenanceMode = false;
         this.numberOfTrips = 0;
+        this.numberOfFloorsPassed = 0;
     }
 
     public void moveToFloor(int desiredFloor) {
@@ -21,6 +23,8 @@ public class Elevator {
             System.out.println("Elevator: " + id + " received an invalid desired floor - ignoring");
             return;
         }
+
+        numberOfFloorsPassed += Math.abs(currentFloor - desiredFloor);
 
         currentFloor = desiredFloor;
         System.out.println("Elevator " + id + " moving to floor: " + desiredFloor);
@@ -71,7 +75,12 @@ public class Elevator {
     }
 
     public void fixElevator() {
+        // Question: Should the number of floors passed be reset when we fix the elevator?
         System.out.println("Elevator: " + this.id + " is fixed!");
         this.maintenanceMode = false;
+    }
+
+    public int getNumberOfFloorsPassed() {
+        return this.numberOfFloorsPassed;
     }
 }
