@@ -3,6 +3,7 @@ public class Elevator {
     int currentFloor;
     int id;
     boolean doorsOpen;
+    boolean occupied;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -21,12 +22,17 @@ public class Elevator {
     }
 
     public String toString() {
+        String occupiedStr = " and it's occupied ";
+        if (occupied == false) {
+            occupiedStr = "and it's not occupied ";
+        }
+
         String doorsOpenStr = " and it has its doors open.";
         if (doorsOpen == false) {
             doorsOpenStr = " and it has its doors closed.";
         }
 
-        return "Elevator: " + id + " is currently on floor: " + currentFloor + doorsOpenStr;
+        return "Elevator: " + id + " is currently on floor: " + currentFloor + occupiedStr + doorsOpenStr;
     }
 
     public void openDoor() {
@@ -37,5 +43,9 @@ public class Elevator {
     public void closeDoor() {
         doorsOpen = false;
         System.out.println("Elevator: " + id + " is closing its doors");
+    }
+
+    public void setOccupied(boolean occupied) {
+        this.occupied = occupied;
     }
 }
