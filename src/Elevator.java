@@ -8,6 +8,7 @@ public class Elevator {
     private boolean maintenanceMode;
     private int numberOfTrips;
     private int numberOfFloorsPassed;
+    private boolean moving;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -16,6 +17,7 @@ public class Elevator {
         this.maintenanceMode = false;
         this.numberOfTrips = 0;
         this.numberOfFloorsPassed = 0;
+        this.moving = false;
     }
 
     public void moveToFloor(int desiredFloor) {
@@ -25,7 +27,6 @@ public class Elevator {
         }
 
         numberOfFloorsPassed += Math.abs(currentFloor - desiredFloor);
-
         currentFloor = desiredFloor;
         System.out.println("Elevator " + id + " moving to floor: " + desiredFloor);
 
