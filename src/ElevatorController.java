@@ -6,9 +6,10 @@ public class ElevatorController {
     int numberOfElevators;
     int numberOfFloors;
     int startingFloor;
-    private ArrayList<Elevator> elevators;
+    private ArrayList<Elevator> elevators; // Don't think we need this but lets double check later. Prolly can just use sets.
     private Set<Elevator> occupiedElevators;
     private Set<Elevator> unoccupiedElevators;
+    private Set<Elevator> elevatorsGoingThroughMaintenance;
 
     public ElevatorController(int numberOfElevators, int numberOfFloors, int startingFloor) {
         this.numberOfElevators = numberOfElevators;
@@ -24,6 +25,7 @@ public class ElevatorController {
         this.occupiedElevators = new HashSet<>();
         this.unoccupiedElevators = new HashSet<>();
         unoccupiedElevators.addAll(elevators);
+        this.elevatorsGoingThroughMaintenance = new HashSet<>();
     }
 
     public void requestElevator(int floorRequestWasMadeFrom, int desiredFloor) {
@@ -35,12 +37,14 @@ public class ElevatorController {
             if (elevator.getCurrentFloor() == floorRequestWasMadeFrom) {
                 elevator.pickupPerson();
                 elevator.moveToFloor(desiredFloor);
+                checkIfElevatorNeedsMaintenance(elevator);
                 return;
             }
         }
 
         // Priority 2
         // Check and see if an OCCUPIED elevator is moving and will pass the floor on its way
+        // TODO: What about time?
 
         // Priority 3
         // The unoccupied elevator closest to the requested floor should move to there
@@ -58,11 +62,37 @@ public class ElevatorController {
             closestElevator.moveToFloor(floorRequestWasMadeFrom);
             closestElevator.pickupPerson();
             closestElevator.moveToFloor(desiredFloor);
+            checkIfElevatorNeedsMaintenance(closestElevator);
             return;
         }
 
         // Priority 4
         // If there are no unoccupied elevators that are going to move past this then what? Wait?
+        System.out.println("There are no unoccupied elevators and there aren't any occupied elevators moving past :(");
     }
 
+    public Set<Elevator> getUnoccupiedElevators() {
+        return this.unoccupiedElevators;
+    }
+
+    public Set<Elevator> getOccupiedElevators() {
+        return this.occupiedElevators;
+    }
+
+
+    public Set<Elevator> elevatorsGoingThroughMaintenance() {
+        return this.elevatorsGoingThroughMaintenance;
+    }
+
+
+    public void fixElevator(Elevator elevator) {
+        elevator.fixElevator();
+    }
+
+    private void checkIfElevatorNeedsMaintenance(Elevator elevator) {
+        if (elevator.isMaintenanceMode()) {
+            elevatorsGoingThroughMaintenance.add(elevator);
+            unoccupiedElevators.remove(elevator);
+        }
+    }
 }

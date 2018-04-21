@@ -1,14 +1,19 @@
 public class Elevator {
+    private static int NUMBER_OF_TRIPS_BEFORE_MAINTENANCE = 100;
     private int numberOfFloors;
     private int currentFloor;
     private int id;
     private boolean doorsOpen;
     private boolean occupied;
+    private boolean maintenanceMode;
+    private int numberOfTrips;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
         this.numberOfFloors = numberOfFloors;
         this.currentFloor = startingFloor;
+        this.maintenanceMode = false;
+        this.numberOfTrips = 0;
     }
 
     public void moveToFloor(int desiredFloor) {
@@ -19,6 +24,12 @@ public class Elevator {
 
         currentFloor = desiredFloor;
         System.out.println("Elevator " + id + " moving to floor: " + desiredFloor);
+
+        this.numberOfTrips++;
+        if (numberOfTrips >= NUMBER_OF_TRIPS_BEFORE_MAINTENANCE) {
+            System.out.println("Elevator: " + this.id + " is going into maintenance mode!");
+            this.maintenanceMode = true;
+        }
     }
 
     public String toString() {
@@ -53,5 +64,14 @@ public class Elevator {
 
     public int getCurrentFloor() {
         return this.currentFloor;
+    }
+
+    public boolean isMaintenanceMode() {
+        return this.maintenanceMode;
+    }
+
+    public void fixElevator() {
+        System.out.println("Elevator: " + this.id + " is fixed!");
+        this.maintenanceMode = false;
     }
 }
