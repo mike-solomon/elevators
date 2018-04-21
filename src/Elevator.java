@@ -2,6 +2,7 @@ public class Elevator {
     int numberOfFloors;
     int currentFloor;
     int id;
+    boolean doorsOpen;
 
     public Elevator(int id, int numberOfFloors, int startingFloor) {
         this.id = id;
@@ -11,7 +12,7 @@ public class Elevator {
 
     public void moveToFloor(int desiredFloor) {
         if (desiredFloor > numberOfFloors || desiredFloor < 1) {
-            System.out.println("Desired floor is invalid - ignoring");
+            System.out.println("Elevator: " + id + " received an invalid desired floor - ignoring");
             return;
         }
 
@@ -20,6 +21,21 @@ public class Elevator {
     }
 
     public String toString() {
-        return "Elevator: " + id + " is currently on floor: " + currentFloor;
+        String doorsOpenStr = " and it has its doors open.";
+        if (doorsOpen == false) {
+            doorsOpenStr = " and it has its doors closed.";
+        }
+
+        return "Elevator: " + id + " is currently on floor: " + currentFloor + doorsOpenStr;
+    }
+
+    public void openDoor() {
+        doorsOpen = true;
+        System.out.println("Elevator: " + id + " is openeing its doors");
+    }
+
+    public void closeDoor() {
+        doorsOpen = false;
+        System.out.println("Elevator: " + id + " is closing its doors");
     }
 }
